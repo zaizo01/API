@@ -26,16 +26,17 @@ namespace API_COURSE.Controllers
             return context.Autores.FirstOrDefault();
         }
 
-        [HttpGet]
+        [HttpGet("listado")]
+        [HttpGet("/listado")]
         public ActionResult<IEnumerable<Autor>> Get()
         {
             return context.Autores.Include(x => x.Libros).ToList();
         }
 
         [HttpGet("{id}", Name = "GetAutor")]
-        public ActionResult<Autor> Get(int id)
+        public async Task<ActionResult<Autor>> Get(int id)
         {
-            var autor = context.Autores.Include(x => x.Libros).FirstOrDefault(x => x.id == id);
+            var autor = await context.Autores.Include(x => x.Libros).FirstOrDefaultAsync(x => x.id == id);
 
             if (autor == null)
             {
